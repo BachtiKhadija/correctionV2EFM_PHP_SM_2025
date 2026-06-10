@@ -1,8 +1,19 @@
 <?php 
 require('config.php');
-if(isset($_POST["send"])){
+
+  $code=$_GET["code"]??"";
+     if(!empty($code)){
+   $sql="select * from professeur where code =?";
+   $stm=$cnx->prepare($sql);
+   $stm->execute([$code]);
+   $prof=$stm->fetch(PDO::FETCH_ASSOC);
+    //si on clic sur send 
+  if(isset($_POST["send"])){
+   
     $code=$_POST["code"]??"";
+ 
    $nom=$_POST["nom"]??"";
+  
     $adr=$_POST["adresse"]??"";
    $status=$_POST["status"]??"";
    $salaire=$_POST["salaire"]??"";
@@ -15,21 +26,33 @@ if(isset($_POST["send"])){
    header('Location:listeProf.php');
 
 
+  
 
-  }else{
 
-    $code=$_GET["code"]??"";
-     if(!empty($code)){
-   $sql="select * from professeur where code =?";
-   $stm=$cnx->prepare($sql);
-   $stm->execute([$code]);
-   $prof=$stm->fetch(PDO::FETCH_ASSOC);
+
+
+
+
+
+
+
+
+
+    //*********** */
+
+
+
+
+
+
+
  }
+     }
  else{
    
  echo "code invalide !!!!!";
  }
-  }
+  
 
 
 
@@ -51,7 +74,7 @@ if(isset($_POST["send"])){
 
 <form action="" method="POST">
         <table>
-            <tr><td>Code</td><td><input type="text" name="nom" value="<?=$prof['code']??"";?>" readonly size="25"></td></td></tr>
+            <tr><td>Code</td><td><input type="text" name="code" value="<?=$prof['code']??"";?>" readonly size="25"></td></td></tr>
             <tr><td>Nom</td><td><input type="text" name="nom" value="<?=$prof['nom']??"";?>" size="25"></td></tr>
        <tr><td>Adresse </td><td><input type="text" name="adresse" value="<?=$prof['adresse']??"";?>" size="25"></td></tr>
        <tr><td>Status</td><td><input type="radio" name="status" value="permanent" <?php echo (isset($prof["status"])&&$prof["status"]=="permanent")?"checked":""?>>Permanent &nbsp; <input type="radio" name="status" value="vacataire" <?php echo (isset($prof["status"])&&$prof["status"]=="vacataire")?"checked":""?>>Vacataire</td></tr>
